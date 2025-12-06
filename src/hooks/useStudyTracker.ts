@@ -8,6 +8,9 @@ const STORAGE_KEYS = {
   USER_PROFILE: 'yks-user-profile',
 };
 
+// Time constants
+const MS_PER_DAY = 86400000; // 24 * 60 * 60 * 1000
+
 // Varsayılan kullanıcı profili
 const DEFAULT_PROFILE: UserProfile = {
   name: 'Öğrenci',
@@ -17,6 +20,14 @@ const DEFAULT_PROFILE: UserProfile = {
   longestStreak: 0,
   totalQuestionsCompleted: 0,
 };
+
+// Generate a unique ID using timestamp and random component
+function generateUniqueId(prefix: string): string {
+  const timestamp = Date.now();
+  const randomPart = Math.random().toString(36).substring(2, 11);
+  const counter = Math.floor(Math.random() * 1000);
+  return `${prefix}-${timestamp}-${randomPart}-${counter}`;
+}
 
 export function useStudyTracker() {
   const [studyRecords, setStudyRecords] = useState<StudyRecord[]>([]);
@@ -85,7 +96,7 @@ export function useStudyTracker() {
   const addStudyRecord = useCallback((record: Omit<StudyRecord, 'id'>) => {
     const newRecord: StudyRecord = {
       ...record,
-      id: `record-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: generateUniqueId('record'),
     };
 
     setStudyRecords(prev => [...prev, newRecord]);
@@ -240,7 +251,7 @@ export function useStudyTracker() {
     }
 
     const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000)
+    const yesterday = new Date(Date.now() - MS_PER_DAY)
       .toISOString()
       .split('T')[0];
 
