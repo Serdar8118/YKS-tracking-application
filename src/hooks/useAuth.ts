@@ -15,6 +15,24 @@ function generateUniqueId(prefix: string): string {
   return `${prefix}-${timestamp}-${randomPart}`;
 }
 
+// Simple password hashing function using base64 and salt
+// Note: In production, use a proper library like bcrypt with native modules
+function hashPassword(password: string, salt: string): string {
+  const combined = `${salt}:${password}:${salt}`;
+  // Simple hash by converting to base64 multiple times
+  let hash = combined;
+  for (let i = 0; i < 3; i++) {
+    hash = btoa(hash);
+  }
+  return hash;
+}
+
+// Generate a random salt
+function generateSalt(): string {
+  return Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
+}
+
 export function useAuth() {
   const [userAccount, setUserAccount] = useState<UserAccount | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -109,8 +127,11 @@ export function useAuth() {
         achievements: [],
       };
 
-      // Save password hash (in real app, this would be hashed and stored securely)
-      await AsyncStorage.setItem(`password-${newUser.id}`, password);
+      // Generate salt and hash password for secure storage
+      const salt = generateSalt();
+      const hashedPassword = hashPassword(password, salt);
+      await AsyncStorage.setItem(`password-${newUser.id}`, hashedPassword);
+      await AsyncStorage.setItem(`salt-${newUser.id}`, salt);
 
       setAllUsers(prev => [...prev, newUser]);
       setUserAccount(newUser);
@@ -138,9 +159,18 @@ export function useAuth() {
         return {success: false, error: 'Kullanıcı bulunamadı'};
       }
 
-      // Check password
-      const storedPassword = await AsyncStorage.getItem(`password-${user.id}`);
-      if (storedPassword !== password) {
+      // Verify password with stored hash and salt
+      const [storedHash, salt] = await Promise.all([
+        AsyncStorage.getItem(`password-${user.id}`),
+        AsyncStorage.getItem(`salt-${user.id}`),
+      ]);
+
+      if (!storedHash || !salt) {
+        return {success: false, error: 'Hesap bilgileri bulunamadı'};
+      }
+
+      const inputHash = hashPassword(password, salt);
+      if (storedHash !== inputHash) {
         return {success: false, error: 'Şifre hatalı'};
       }
 

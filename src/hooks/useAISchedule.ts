@@ -157,9 +157,9 @@ export function useAISchedule() {
           if (!isRestDay) {
             // Create study sessions for the day
             const daySubjects = [...sortedSubjects];
-            // Shuffle subjects slightly for variety
+            // Shuffle subjects slightly for variety using Fisher-Yates algorithm
             for (let j = daySubjects.length - 1; j > 0; j--) {
-              const k = Math.floor(Math.random() * (j + 1)) % daySubjects.length;
+              const k = Math.floor(Math.random() * (j + 1));
               [daySubjects[j], daySubjects[k]] = [daySubjects[k], daySubjects[j]];
             }
 
