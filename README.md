@@ -4,7 +4,20 @@ YKS (Yükseköğretim Kurumları Sınavı) sınavına hazırlık sürecinizi tak
 
 ## 🎯 Özellikler
 
-### Sınav Takibi
+### 🔐 Kullanıcı Hesap Sistemi
+- Kayıt ve giriş yapma
+- Kullanıcı profili yönetimi
+- Güvenli oturum yönetimi
+
+### 🤖 AI Çalışma Programı
+- Yapay zeka destekli haftalık çalışma programı oluşturma
+- Kişiselleştirilmiş ders planlaması
+- Zayıf ve güçlü derslere göre önceliklendirme
+- Tercih edilen çalışma saatlerine göre program
+- Dinlenme günleri belirleme
+- Program ilerleme takibi
+
+### 📊 Sınav Takibi
 - **TYT (Temel Yeterlilik Testi)** dersleri takibi
   - Türkçe (40 soru)
   - Sosyal Bilimler (20 soru)
@@ -16,31 +29,51 @@ YKS (Yükseköğretim Kurumları Sınavı) sınavına hazırlık sürecinizi tak
   - Eşit Ağırlık (Edebiyat, Tarih, Coğrafya, Matematik)
   - Sözel (Edebiyat, Tarih, Coğrafya, Felsefe, Din Kültürü)
 
-### Çalışma Planı Takibi
-- �� Günlük çalışma kaydı ekleme
+### 🏆 Liderlik Tablosu & Puan Sistemi
+- Kullanıcılar arası sıralama
+- Puan kazanma sistemi (soru çözme, doğru cevap bonusu)
+- Seviye atlama sistemi
+- Global liderlik tablosu
+
+### 🏅 Başarılar & Rozetler
+- 13 farklı başarı rozeti
+- Soru çözme başarıları
+- Seri (streak) başarıları
+- Doğruluk oranı başarıları
+- Çalışma süresi başarıları
+- Seviye başarıları
+- Rozet puanı ödülleri
+
+### 📝 Çalışma Planı Takibi
+- 📝 Günlük çalışma kaydı ekleme
 - ✅ Doğru/Yanlış/Boş sayısı takibi
 - ⏱️ Çalışma süresi takibi
 - 💭 Çalışma notları ekleme
 
-### Motivasyon Özellikleri
+### �� Motivasyon Özellikleri
 - 🎯 Günlük hedef belirleme ve ilerleme takibi
 - 🔥 Günlük çalışma serisi (streak) takibi
 - 📊 Haftalık ve toplam istatistikler
 - ⏰ Sınav geri sayımı
 - 💪 Motivasyon mesajları
 
-### İstatistikler
-- Günlük özet (doğru, yanlış, boş, başarı oranı)
-- Haftalık istatistikler
-- Ders bazlı performans analizi
-- Toplam çözülen soru sayısı
+### ✨ Animasyonlar
+- Akıcı geçiş animasyonları
+- Etkileşimli buton animasyonları
+- Liste animasyonları
+- İlerleme çubuğu animasyonları
+- Giriş ekranı animasyonları
 
 ## 📱 Ekranlar
 
-1. **Ana Sayfa (Dashboard)**: Günlük hedef, istatistikler ve hızlı özet
-2. **Çalışma Ekle**: Yeni çalışma kaydı oluşturma
-3. **Geçmiş**: Tüm çalışma kayıtlarını görüntüleme ve filtreleme
-4. **Profil**: Kullanıcı ayarları ve hedef belirleme
+1. **Giriş/Kayıt**: Kullanıcı hesap yönetimi
+2. **Ana Sayfa (Dashboard)**: Günlük hedef, istatistikler ve hızlı özet
+3. **AI Program**: Yapay zeka destekli haftalık çalışma programı
+4. **Çalışma Ekle**: Yeni çalışma kaydı oluşturma
+5. **Geçmiş**: Tüm çalışma kayıtlarını görüntüleme ve filtreleme
+6. **Liderlik Tablosu**: Kullanıcı sıralaması
+7. **Başarılar**: Rozetler ve ilerleme
+8. **Profil**: Kullanıcı ayarları ve hedef belirleme
 
 ## 🚀 Kurulum
 
@@ -73,6 +106,7 @@ npx react-native run-android
 - **React Native**: Mobil uygulama geliştirme
 - **TypeScript**: Tip güvenli kod yazımı
 - **AsyncStorage**: Yerel veri saklama
+- **React Native Reanimated**: Akıcı animasyonlar
 - **React Hooks**: State yönetimi
 
 ## 📁 Proje Yapısı
@@ -82,21 +116,34 @@ YKS-tracking-application/
 ├── android/              # Android native kodu
 ├── ios/                  # iOS native kodu (kullanılmıyor)
 ├── src/
-│   ├── components/       # Yeniden kullanılabilir bileşenler
 │   ├── hooks/           # Custom React hooks
-│   │   └── useStudyTracker.ts
+│   │   ├── useStudyTracker.ts    # Çalışma takibi
+│   │   ├── useAuth.ts            # Kimlik doğrulama
+│   │   └── useAISchedule.ts      # AI program oluşturucu
 │   ├── screens/         # Uygulama ekranları
-│   │   ├── DashboardScreen.tsx
-│   │   ├── AddStudyScreen.tsx
-│   │   ├── HistoryScreen.tsx
-│   │   └── ProfileScreen.tsx
-│   ├── types/           # TypeScript tip tanımları
-│   │   └── index.ts
-│   └── utils/           # Yardımcı fonksiyonlar
+│   │   ├── AuthScreen.tsx        # Giriş/Kayıt
+│   │   ├── DashboardScreen.tsx   # Ana sayfa
+│   │   ├── AIScheduleScreen.tsx  # AI program
+│   │   ├── AddStudyScreen.tsx    # Çalışma ekle
+│   │   ├── HistoryScreen.tsx     # Geçmiş
+│   │   ├── LeaderboardScreen.tsx # Liderlik tablosu
+│   │   ├── AchievementsScreen.tsx # Başarılar
+│   │   └── ProfileScreen.tsx     # Profil
+│   └── types/           # TypeScript tip tanımları
+│       └── index.ts
 ├── App.tsx              # Ana uygulama bileşeni
 ├── package.json
 └── README.md
 ```
+
+## 🎮 Puan Sistemi
+
+| Aksiyon | Puan |
+|---------|------|
+| Soru çözme | +1 puan/soru |
+| Doğru cevap | +0.5 bonus puan |
+| Günlük seri | +10 puan/gün |
+| Başarı rozeti | +10-500 puan |
 
 ## 📄 Lisans
 
