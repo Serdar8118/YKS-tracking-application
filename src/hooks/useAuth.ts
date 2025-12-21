@@ -1,6 +1,7 @@
 import {useState, useEffect, useCallback} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UserAccount, calculateLevel, ACHIEVEMENTS} from '../types';
+import {encodeBase64} from '../utils/safeBase64';
 
 const STORAGE_KEYS = {
   USER_ACCOUNT: 'yks-user-account',
@@ -19,10 +20,9 @@ function generateUniqueId(prefix: string): string {
 // Note: In production, use a proper library like bcrypt with native modules
 function hashPassword(password: string, salt: string): string {
   const combined = `${salt}:${password}:${salt}`;
-  // Simple hash by converting to base64 multiple times
   let hash = combined;
   for (let i = 0; i < 3; i++) {
-    hash = btoa(hash);
+    hash = encodeBase64(hash);
   }
   return hash;
 }

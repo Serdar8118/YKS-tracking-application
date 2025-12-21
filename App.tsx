@@ -16,6 +16,7 @@ import {
   Animated,
 } from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import ErrorBoundary from './src/components/ErrorBoundary';
 import {useStudyTracker} from './src/hooks/useStudyTracker';
 import {useAuth} from './src/hooks/useAuth';
 import {useAISchedule} from './src/hooks/useAISchedule';
@@ -42,7 +43,9 @@ function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle="light-content" backgroundColor="#667eea" />
-      <AppContent />
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
     </SafeAreaProvider>
   );
 }
@@ -226,7 +229,11 @@ function AppContent() {
           />
         );
       default:
-        return null;
+        return (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>Ekran bulunamadı</Text>
+          </View>
+        );
     }
   };
 
@@ -235,6 +242,14 @@ function AppContent() {
   return (
     <View style={styles.container}>
       {renderScreen()}
+
+      {__DEV__ && (
+        <View style={styles.devOverlay}>
+          <Text style={styles.devOverlayText}>
+            {`screen: ${currentScreen} | login: ${isLoggedIn ? '1' : '0'}`}
+          </Text>
+        </View>
+      )}
 
       {/* Bottom Navigation */}
       {showBottomNav && (
@@ -449,6 +464,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  devOverlay: {
+    position: 'absolute',
+    bottom: 6,
+    right: 6,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  devOverlayText: {
+    color: '#fff',
+    fontSize: 10,
   },
 });
 
